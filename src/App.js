@@ -12,13 +12,7 @@ const App = () => {
       <Button label="good" onClick={setState(setGood, good)} />
       <Button label="neutral" onClick={setState(setNeutral, neutral)} />
       <Button label="bad" onClick={setState(setBad, bad)} />
-      <Header label="statistics" />
-      <ListItem label="good" amount={good} />
-      <ListItem label="neutral" amount={neutral} />
-      <ListItem label="bad" amount={bad} />
-      <ListItem label="all" amount={good+neutral+bad} />
-      <StatGroup label="average" calc={() => {return (good-bad)/(good+bad+neutral) || 0}} hasPct={false}/>
-      <StatGroup label="positive" calc={() => {return (good)/(good+bad+neutral) *100 || 0}} hasPct={true}/>
+      <Statistics statInfo={{good: good, setGood: setGood, bad: bad, setBad: setBad, neutral: neutral, setNeutral: setNeutral}}/>
     </div>
   )
 }
@@ -58,6 +52,20 @@ const StatGroup = ({label, calc, hasPct}) => {
   return (
     <div>
       {label} {calc()} {hasPct ? "%" : ""}
+    </div>
+  )
+}
+
+const Statistics = ({statInfo}) => {
+  return (
+    <div>
+      <Header label="statistics" />
+      <ListItem label="good" amount={statInfo.good} />
+      <ListItem label="neutral" amount={statInfo.neutral} />
+      <ListItem label="bad" amount={statInfo.bad} />
+      <ListItem label="all" amount={statInfo.good+statInfo.neutral+statInfo.bad} />
+      <StatGroup label="average" calc={() => {return (statInfo.good-statInfo.bad)/(statInfo.good+statInfo.bad+statInfo.neutral) || 0}}/>
+      <StatGroup label="positive" calc={() => {return (statInfo.good)/(statInfo.good+statInfo.bad+statInfo.neutral) *100 || 0}} hasPct={true}/>
     </div>
   )
 }

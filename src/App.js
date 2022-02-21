@@ -1,50 +1,63 @@
 import { useState } from 'react'
 
 const App = () => {
-  const [left, setLeft] = useState(0)
-  const [right, setRight] = useState(0)
-  const [allClicks, setAll] = useState([])
-
-  const handleLeftClick = () => {
-    setAll(allClicks.concat('L'))
-    setLeft(left + 1)
-  }
-
-  const handleRightClick = () => {
-    setAll(allClicks.concat('R'))
-    setRight(right + 1)
-  }
+  // save clicks of each button to its own state
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
 
   return (
     <div>
-      {left}
-      <Button onClick={handleLeftClick} text="left"/>
-      <Button onClick={handleRightClick} text="right"/>
-      {right}
-      <History allClicks={allClicks} />
+      <Header label="give feedback" />
+      <Button label="good" onClick={setState(setGood, good)} />
+      <Button label="neutral" onClick={setState(setNeutral, neutral)} />
+      <Button label="bad" onClick={setState(setBad, bad)} />
+      <Header label="statistics" />
+      <ListItem label="good" amount={good} />
+      <ListItem label="neutral" amount={neutral} />
+      <ListItem label="bad" amount={bad} />
+      <ListItem label="all" amount={good+neutral+bad} />
+      <StatGroup label="average" calc={() => {return (good-bad)/(good+bad+neutral) || 0}} hasPct={false}/>
+      <StatGroup label="positive" calc={() => {return (good)/(good+bad+neutral) *100 || 0}} hasPct={true}/>
     </div>
   )
 }
 
-const History = ({allClicks}) => {
-  if (allClicks.length === 0) {
-    return (
-      <div>
-        the app is used by pressing the buttons
-      </div>
-    )
-  }
+function setState(stateFunc, currAmt)
+{
+  return () => {stateFunc(currAmt + 1)};
+}
+
+const Header = ({label}) => {
   return (
     <div>
-      button press history: {allClicks.join(' ')}
+      <h1>
+        {label}
+      </h1>
     </div>
   )
 }
 
-const Button = ({onClick, text}) => {
+const Button = ({label, onClick}) => {
+  return (
+    <button onClick={onClick}>
+      {label}
+    </button>
+  )
+}
+
+const ListItem = ({label, amount}) => {
   return (
     <div>
-      <button onClick={onClick}> {text} </button>
+      {label} {amount}
+    </div>
+  )
+}
+
+const StatGroup = ({label, calc, hasPct}) => {
+  return (
+    <div>
+      {label} {calc()} {hasPct ? "%" : ""}
     </div>
   )
 }

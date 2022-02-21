@@ -1,47 +1,29 @@
 import { useState } from 'react'
 
 const App = () => {
-  // save clicks of each button to its own state
-  const [good, setGood] = useState(0)
-  const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
+  const anecdotes = [
+    'If it hurts, do it more often',
+    'Adding manpower to a late software project makes it later!',
+    'The first 90 percent of the code accounts for the first 10 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+    'Premature optimization is the root of all evil.',
+    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients'
+  ]
+   
+  const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState(Array(7).fill(0))
 
-  if (good+bad+neutral !== 0)
-  {
-    return (
-      <div>
-        <Header label="give feedback" />
-        <Button label="good" onClick={setState(setGood, good)} />
-        <Button label="neutral" onClick={setState(setNeutral, neutral)} />
-        <Button label="bad" onClick={setState(setBad, bad)} />
-        <Header label="statistics" />
-        <Statistics statInfo={{good: good, setGood: setGood, bad: bad, setBad: setBad, neutral: neutral, setNeutral: setNeutral}}/>
-      </div>
-    )
-  }
+  const maxIdx = points.indexOf(Math.max(...points))
+  console.log(maxIdx)
+
   return (
     <div>
-      <Header label="give feedback" />
-      <Button label="good" onClick={setState(setGood, good)} />
-      <Button label="neutral" onClick={setState(setNeutral, neutral)} />
-      <Button label="bad" onClick={setState(setBad, bad)} />
-      <Header label="statistics" />
-      <p>No feedback given</p>
-    </div>
-  )
-}
-
-function setState(stateFunc, currAmt)
-{
-  return () => {stateFunc(currAmt + 1)};
-}
-
-const Header = ({label}) => {
-  return (
-    <div>
-      <h1>
-        {label}
-      </h1>
+      <AnecdoteVotes anecdote={anecdotes[selected]} votes={points[selected]} />
+      <Button label="vote" onClick={()=>{setPointsArray(points, setPoints, selected)}} />
+      <Button label="next anecdote" onClick={() => {setSelected(Math.floor(Math.random() * 7))}} />
+      <h2>Anecdote with most votes</h2>
+      <AnecdoteVotes anecdote={anecdotes[maxIdx]} votes={points[maxIdx]} />
     </div>
   )
 }
@@ -54,25 +36,20 @@ const Button = ({label, onClick}) => {
   )
 }
 
-const StatisticLine = ({label, amount, hasPct}) => {
+const AnecdoteVotes = ({anecdote, votes}) => {
   return (
     <div>
-      {label} {amount} {hasPct ? "%" : ""}
+      {anecdote}
+      <br></br>
+      has {votes} votes
     </div>
   )
 }
 
-const Statistics = ({statInfo}) => {
-  return (
-    <div>
-      <StatisticLine label="good" amount={statInfo.good} />
-      <StatisticLine label="neutral" amount={statInfo.neutral} />
-      <StatisticLine label="bad" amount={statInfo.bad} />
-      <StatisticLine label="all" amount={statInfo.good+statInfo.neutral+statInfo.bad} />
-      <StatisticLine label="average" amount={ (statInfo.good-statInfo.bad)/(statInfo.good+statInfo.bad+statInfo.neutral) || 0}/>
-      <StatisticLine label="positive" amount={(statInfo.good)/(statInfo.good+statInfo.bad+statInfo.neutral) *100 || 0} hasPct={true}/>
-    </div>
-  )
+const setPointsArray = (points, setPoints, selected) => {
+  var copy = [...points]
+  copy[selected]++
+  setPoints(copy)
 }
 
 export default App

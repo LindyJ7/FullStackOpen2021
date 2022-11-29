@@ -28,13 +28,11 @@ function App() {
 				if (trackedInfo[cardDrawn])
 				{
 					localStorage.setItem(cardName + "Drawn", parseInt(parseInt((localStorage.getItem(cardName + "Drawn") || 0)) + 1));
-					//localStorage.setItem("curr" + cardName + "Drawn", false);
 					newObj[cardDrawn] = false;
 				}
 				if (trackedInfo[cardPlayed])
 				{
 					localStorage.setItem(cardName + "Played", parseInt(parseInt((localStorage.getItem(cardName + "Played") || 0)) + 1));
-					//localStorage.setItem("curr" + cardName + "Played", false);
 					newObj[cardPlayed] = false;
 				}
 			}

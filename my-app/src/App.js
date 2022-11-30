@@ -66,9 +66,9 @@ function App() {
 						</tr>
 					</tbody>
 				</table>
-				<label style={{"fontSize": "24px", "verticalAlign": "center"}}>
+				<label style={{"fontSize": "40px", "verticalAlign": "center"}}>
 					Cubes:&nbsp;&nbsp;
-					<input onChange={(e) => setTrackedInfo({...trackedInfo, cubes: e.target.value})} value={trackedInfo.cubes} style={{height: "20px"}} type="number" />
+					<input onChange={(e) => setTrackedInfo({...trackedInfo, cubes: e.target.value})} value={trackedInfo.cubes} style={{height: "45px", width: "60px", fontSize: "37px"}} type="number" />
 				</label>
 				<button onClick={buttonOnClick} style={{"fontSize": "26px", "borderRadius": "10px", "margin": "15px"}}>Submit</button>
 			</header>
@@ -80,7 +80,7 @@ function Card(params) {
 	return (
 		<div className="Card">
 			<header className="Card-header">
-				<img src={params.image} className="Card-image" alt="image" height='300' width='300' />
+				<img src={params.image} className="Card-image" alt="image" height='300' width='220' />
 				<Checkbox name={params.name + "Drawn"} onChange={params.onChange} label = "Drawn" data={params.data} setData={params.setData} />
 				<Checkbox name={params.name + "Played"} onChange={params.onChange} label = "Played" data={params.data} setData={params.setData} />
 			</header>
